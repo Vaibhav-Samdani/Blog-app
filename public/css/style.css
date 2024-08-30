@@ -1,0 +1,41 @@
+
+.singleComment {
+    display: flex;
+    flex-wrap: nowrap;
+    margin-bottom: 3%;
+  }
+  
+  .avaterImgDiv {
+    width: 4%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px; /* add some space between avatar and name/content */
+  }
+  
+  .avaterImgDiv img {
+    width: 30px; /* set a fixed width for the avatar image */
+    height: 30px; /* set a fixed height for the avatar image */
+    border-radius: 50%; /* make the avatar image circular */
+  }
+  
+  .nameContentDiv {
+    width: 96%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  
+  .nameContentDiv h5 {
+    margin-top: 0; /* remove default margin top from h5 */
+    font-weight: bold; /* make the username bold */
+  }
+  
+  .nameContentDiv p {
+    margin-bottom: 10px; /* add some space between the comment text and the next comment */
+  }
+
+
+
+

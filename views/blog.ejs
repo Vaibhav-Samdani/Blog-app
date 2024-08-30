@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/head') %>
+    <link rel="stylesheet" href="./css/blog.css">
+    <title>Home Page</title>
+  </head>
+  <body>
+    <%- include("./partials/nav") %>
+    <section class="container">
+      <div class="py-5 paddingDiv">
+        <div class="feature col blog-div">
+          <div
+            class="feature-icon d-inline-flex align-items-center justify-content-center bg-gradient fs-2 mb-3"
+          >
+            <img
+              src="<%= locals.blog.coverImageURL %>"
+              loading="eager"
+              width="600"
+            />
+          </div>
+          <div class="blog-body">
+            <div>
+
+              <h3 class="fs-2 text-body-emphasis"><%= locals.blog.title %></h3>
+              <p><%= locals.blog.body %></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <section>
+        <h2>Comments (<%= locals.comments.length %>)</h2>
+        <% if (locals.user) { %>
+        <form
+          action="/blog/comment/<%= locals.blog._id %>"
+          class="input-group"
+          method="post"
+        >
+          <input
+            type="text"
+            name="content"
+            class="form-control"
+            id="content"
+            placeholder="Enter your comment"
+            aria-describedby="basic-addon3 basic-addon4"
+          />
+          <button
+            type="submit"
+            class="input-group-text bg-primary text-white"
+            id="basic-addon3"
+          >
+            Comment
+          </button>
+        </form>
+        <% } %>
+
+        <div class="pt-4">
+          <% locals.comments.forEach(comment => { %>
+
+          <div class="singleComment">
+            <div class="avaterImgDiv">
+              <img
+                src="<%= comment.createdBy.profileImageURL %>"
+                width="30"
+                alt=""
+              />
+            </div>
+            <div class="nameContentDiv">
+              <h5 class="pt-2"><%= comment.createdBy.fullName %></h5>
+              <p><%= comment.content %></p>
+            </div>
+          </div>
+
+          <% }); %>
+        </div>
+      </section>
+    </section>
+
+    <%- include("./partials/scripts.ejs") %>
+  </body>
+</html>
