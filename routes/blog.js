@@ -40,7 +40,7 @@ router.get("/:id", async (req, res) => {
     return res.render("blog"); 
   }
   // const blog = await Blog.findById(req.params.id).populate("createdBy");
-  const blog = await Blog.findById(req.params.id);
+  const blog = await Blog.findById(req.params.id).populate("createdBy");
   const comment = await Comment.find({ blogId: req.params.id }).populate("createdBy");
   console.log("---->comments : ", comment);
   
