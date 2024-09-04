@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/head') %>
+    <title>Home Page</title>
+  </head>
+  <body>
+      <%- include("./partials/nav") %>
+      
+      <div class="container mt-3">
+        <form action="/blog/edit/<%= locals.blog._id %>" method="post" enctype="multipart/form-data">
+          <div class="mb-3">
+            <label for="coverImage" class="form-label">Cover Image</label>
+            <input
+              type="file"
+              class="form-control"
+              id="coverImage"
+              name="coverImage"
+              aria-describedby="coverImage"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <% console.log(blog.title); %>
+            <input
+              type="text"
+              class="form-control"
+              id="title"
+              name="title"
+              aria-describedby="title"
+              value="<%= locals.title %>"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="body">Body</label>
+            <textarea rows="6" name="body" class="form-control" id="body"><%= body %></textarea>
+          </div>
+          <div class="mb-3">
+            <button class="btn btn-primary">Submit</button>
+          </div>
+        </form>
+      </div>
+  
+      <%- include('./partials/scripts') %>
+  </body>
+</html>

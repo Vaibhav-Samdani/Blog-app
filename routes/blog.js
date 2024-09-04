@@ -35,15 +35,19 @@ router.get("/add-new", async (req, res) => {
 router.get("/:id", async (req, res) => {
   // const id = req.params.id;
   // console.log(req);
-  console.log(req); 
+  // console.log(req);
   if (req.params.id.split(".").includes("jpg")) {
-    return res.render("blog"); 
+    return res.render("blog");
   }
   // const blog = await Blog.findById(req.params.id).populate("createdBy");
   const blog = await Blog.findById(req.params.id).populate("createdBy");
-  const comment = await Comment.find({ blogId: req.params.id }).populate("createdBy");
+  const comment = await Comment.find({ blogId: req.params.id }).populate(
+    "createdBy"
+  );
+
+  console.log("---->blogs : ", blog);
   console.log("---->comments : ", comment);
-  
+
   let user;
   if (req.user) {
     user = await User.findById(blog.createdBy);
@@ -70,11 +74,60 @@ router.post("/", upload.single("coverImage"), async (req, res) => {
   return res.redirect(`/blog/${blog._id}`);
 });
 
+router.get("/edit/:id", async (req, res) => {
+  console.log("req.user : ", req.user);
+  if (!req.user) {
+    return res.redirect("/user/signin");
+  }
+  const user = await User.findById(req.user._id);
+
+  const id = req.params.id;
+  const blog = await Blog.findById(id);
+  const { title, body } = blog;
+  res.render("editBlog", {
+    title,
+    body,
+    blog,
+    user,
+  });
+});
+
+router.post("/edit/:id", upload.single("coverImage"), async (req, res) => {
+  const id = req.params.id;
+  const { title, body } = req.body;
+
+  const blog = await Blog.findById(id);
+
+  let filename = blog.coverImageURL.split("/")[2];
+
+  if (req.file) {
+    filename = req.file.filename;
+  }
+
+  await Blog.findByIdAndUpdate(id, {
+    title,
+    body,
+    coverImageURL: `/uploads/${filename}`,
+  });
+  console.log("filename ", filename);
+
+  return res.redirect("/");
+});
+
+router.get("/delete/:id", async (req, res) => {
+  if (!req.user) {
+    return res.redirect("/user/signin");
+  }
+  const id = req.params.id;
+  const deletedBlogs = await Blog.findByIdAndDelete(id);
+  console.log(deletedBlogs);
+  return res.redirect("/");
+});
+
 router.post("/comment/:blogId", async (req, res) => {
   // console.log("----> user : ", req.body.content);
   const { content } = req.body;
   if (!req.user) return res.redirect("/user/signin");
-  
   if (!content) {
     return res.redirect(`/blog/${req.params.blogId}`);
   }
